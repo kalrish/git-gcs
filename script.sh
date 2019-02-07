@@ -151,6 +151,14 @@ function command_store_create {
 	echo 'Grant access to it to keys with  git gcs key add'
 }
 
+function command_store_remove {
+	store="${1:?error: store name not specified}"
+	
+	assert_stage_empty
+	
+	git rm -fr -- "${store}"
+}
+
 function command_store {
 	if [[ $# > 0 ]]
 	then
