@@ -1,5 +1,7 @@
 set -e
 
+source "$(git --exec-path)/git-sh-setup"
+
 function stage_empty {
 	git diff --quiet --cached
 }
