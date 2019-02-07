@@ -49,6 +49,58 @@ function command_export {
 	fi
 }
 
+function command_key {
+	if [[ $# > 0 ]]
+	then
+		declare -A arguments
+		arguments[store]=''
+		
+		declare -i count=2
+		
+		for argument in "$@"
+		do
+			if [[ ${argument} =~ ^\-\-(.*)=(.*)$ ]]
+			then
+				let ++count
+				
+				parameter="${BASH_REMATCH[1]}"
+				value="${BASH_REMATCH[2]}"
+				
+				if [[ -v arguments["${parameter}"] ]]
+				then
+					arguments["${parameter}"]="${value}"
+				fi
+			else
+				subcommand="${argument}"
+				break
+			fi
+		done
+		
+		if [[ -v subcommand ]]
+		then
+			funcmd="command_key_${subcommand}"
+			if [[ $(type -t -- "${funcmd}") = function ]]
+			then
+				for key in "${!arguments[@]}"
+				do
+					export -- "${key//-/_}=${arguments[${key}]}"
+				done
+				
+				"${funcmd}" "${@:${count}}"
+			else
+				echo "error: unknown git-gcs-key subcommand '${subcommand}'"
+				return 1
+			fi
+		else
+			echo 'error: missing git-gcs-key subcommand'
+			return 1
+		fi
+	else
+		echo 'error: missing git-gcs-key subcommand'
+		return 1
+	fi
+}
+
 function command {
 	if [[ $# > 0 ]]
 	then
