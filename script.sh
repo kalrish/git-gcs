@@ -74,6 +74,16 @@ function command_key_add {
 	git commit -m "Let ${key_identifier} access store '${store_name}'"
 }
 
+function command_key_delete {
+	store_name="${1:?error: store name not specified}"
+	key_name="${2:?error: key name not specified}"
+	
+	assert_stage_empty
+	
+	git rm -f -- "${store_name}/keys/${key_name}.asc"
+	git commit -m "Revoke access to ${store_name} to ${key_name}"
+}
+
 function command_key {
 	if [[ $# > 0 ]]
 	then
