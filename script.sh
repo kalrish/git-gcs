@@ -1,5 +1,9 @@
 set -e
 
+function command_archive {
+	git bundle create "${1:-${PWD##*/}.bundle}" --all
+}
+
 function command {
 	if [[ $# > 0 ]]
 	then
