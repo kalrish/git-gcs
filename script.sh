@@ -136,6 +136,21 @@ function command_key {
 	fi
 }
 
+function command_store_create {
+	store="${1:?error: store name not specified}"
+	
+	assert_stage_empty
+	
+	mkdir -p -- "${store}/keys"
+	echo '---' > "${store}/store.yaml"
+	
+	git add -- "${store}"
+	git commit -m "Create store '${store}'"
+	
+	echo "Store '${store}' created successfully"
+	echo 'Grant access to it to keys with  git gcs key add'
+}
+
 function command_store {
 	if [[ $# > 0 ]]
 	then
