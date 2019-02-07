@@ -51,4 +51,6 @@ function command {
 	fi
 }
 
+exec > >(sed -e 's/^/git-gcs: /' >&2)
+
 command "$@"
