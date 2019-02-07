@@ -18,6 +18,7 @@ function command_archive {
 
 function command_export {
 	declare -A arguments
+	arguments[gpg]=gpg
 	
 	declare -i count=2
 	
@@ -54,7 +55,7 @@ function command_export {
 			key_args+=("${key}")
 		done
 		
-		gpg --encrypt "${key_args[@]}" "${store}/store.yaml"
+		"${gpg}" --encrypt "${key_args[@]}" "${store}/store.yaml"
 	else
 		echo 'error: store name not specified'
 		return 1
