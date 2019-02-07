@@ -1,5 +1,17 @@
 set -e
 
+function stage_empty {
+	git diff --quiet --cached
+}
+
+function assert_stage_empty {
+	if ! stage_empty
+	then
+		echo 'error: stage is not empty'
+		false
+	fi
+}
+
 function command_archive {
 	git bundle create "${1:-${PWD##*/}.bundle}" --all
 }
@@ -47,6 +59,19 @@ function command_export {
 		echo 'error: store name not specified'
 		return 1
 	fi
+}
+
+function command_key_add {
+	store_name="${1:?error: store name not specified}"
+	key_name="${2:?error: key name not specified}"
+	key_identifier="${3:?error: key identifier not supplied}"
+	
+	assert_stage_empty
+	
+	path="${stores_dir}/${store_name}/keys/${key_name}.asc"
+	gpg ${keyring:+--keyring "${keyring}"} --export --armor --output "${path}" "${key_identifier}"
+	git add -- "${path}"
+	git commit -m "Let ${key_identifier} access store '${store_name}'"
 }
 
 function command_key {
