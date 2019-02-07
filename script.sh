@@ -9,7 +9,7 @@ function stage_empty {
 function assert_stage_empty {
 	if ! stage_empty
 	then
-		echo 'error: stage is not empty'
+		die 'stage is not empty'
 		false
 	fi
 }
@@ -59,8 +59,7 @@ function command_export {
 		
 		"${gpg}" --encrypt "${key_args[@]}" "${store}/store.yaml"
 	else
-		echo 'error: store name not specified'
-		return 1
+		die 'store name not specified'
 	fi
 }
 
@@ -126,16 +125,13 @@ function command_key {
 				
 				"${funcmd}" "${@:${count}}"
 			else
-				echo "error: unknown git-gcs-key subcommand '${subcommand}'"
-				return 1
+				die "unknown git-gcs-key subcommand '${subcommand}'"
 			fi
 		else
-			echo 'error: missing git-gcs-key subcommand'
-			return 1
+			die 'missing git-gcs-key subcommand'
 		fi
 	else
-		echo 'error: missing git-gcs-key subcommand'
-		return 1
+		die 'missing git-gcs-key subcommand'
 	fi
 }
 
@@ -150,8 +146,8 @@ function command_store_create {
 	git add -- "${store}"
 	git commit -m "Create store '${store}'"
 	
-	echo "Store '${store}' created successfully"
-	echo 'Grant access to it to keys with  git gcs key add'
+	say "Store '${store}' created successfully"
+	say 'Grant access to it to keys with  git gcs key add'
 }
 
 function command_store_remove {
@@ -200,16 +196,13 @@ function command_store {
 				
 				"${funcmd}" "${@:${count}}"
 			else
-				echo "error: unknown git-gcs-store subcommand '${subcommand}'"
-				return 1
+				die "unknown git-gcs-store subcommand '${subcommand}'"
 			fi
 		else
-			echo 'error: missing git-gcs-store subcommand'
-			return 1
+			die 'missing git-gcs-store subcommand'
 		fi
 	else
-		echo 'error: missing git-gcs-store subcommand'
-		return 1
+		die 'missing git-gcs-store subcommand'
 	fi
 }
 
@@ -251,16 +244,13 @@ function command {
 				
 				"${funcmd}" "${@:${count}}"
 			else
-				echo "error: unknown subcommand '${subcommand}'"
-				return 1
+				die "unknown subcommand '${subcommand}'"
 			fi
 		else
-			echo 'error: missing subcommand'
-			return 1
+			die 'missing subcommand'
 		fi
 	else
-		echo 'error: missing subcommand'
-		return 1
+		die 'missing subcommand'
 	fi
 }
 
