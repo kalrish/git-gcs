@@ -57,7 +57,7 @@ function command_export {
 			key_args+=("${key}")
 		done
 		
-		"${gpg}" --encrypt "${key_args[@]}" "${store}/store.yaml"
+		"${gpg}" --batch --yes --encrypt "${key_args[@]}" "${store}/store.yaml"
 	else
 		die 'store name not specified'
 	fi
@@ -71,7 +71,7 @@ function command_key_add {
 	assert_stage_empty
 	
 	path="${stores_dir}/${store_name}/keys/${key_name}.asc"
-	gpg ${keyring:+--keyring "${keyring}"} --export --armor --output "${path}" "${key_identifier}"
+	gpg --batch --yes ${keyring:+--keyring "${keyring}"} --export --armor --output "${path}" "${key_identifier}"
 	git add -- "${path}"
 	git commit -m "Let ${key_identifier} access store '${store_name}'"
 }
