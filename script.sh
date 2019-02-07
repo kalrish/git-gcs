@@ -142,6 +142,7 @@ function command_store_create {
 	
 	mkdir -p -- "${store}/keys"
 	echo '---' > "${store}/store.yaml"
+	echo 'store.yaml.gpg' > "${store}/.gitignore"
 	
 	git add -- "${store}"
 	git commit -m "Create store '${store}'"
