@@ -51,10 +51,10 @@ function command_export {
 		done
 		
 		declare -a key_args
-		for key in "${store}"/keys/*.asc
+		for key in "$(git ls-tree --name-only HEAD "${store}/keys/")"
 		do
 			key_args+=(-f)
-			key_args+=("${key}")
+			key_args+=(<(git show "HEAD:${key}"))
 		done
 		
 		"${gpg}" --batch --yes --encrypt "${key_args[@]}" "${store}/store.yaml"
