@@ -57,7 +57,7 @@ function command_export {
 			key_args+=(<(git show "HEAD:${key}"))
 		done
 		
-		"${gpg}" --batch --yes --encrypt "${key_args[@]}" "${store}/store.yaml"
+		"${gpg}" --batch --yes --encrypt --no-keyring "${key_args[@]}" "${store}/store.yaml"
 	else
 		die 'store name not specified'
 	fi
