@@ -53,7 +53,7 @@ function command_export {
 		declare -a key_args
 		for key in "$(git ls-tree --name-only HEAD "${store}/keys/")"
 		do
-			key_args+=(-f)
+			key_args+=(-F)
 			key_args+=(<(git show "HEAD:${key}"))
 		done
 		
